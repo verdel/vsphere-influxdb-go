@@ -269,18 +269,22 @@ func (vcenter *VCenter) Query(config Configuration, InfluxDBClient influxclient.
 
 	// Retrieve properties for all vms
 	var vmmo []mo.VirtualMachine
-	err = pc.Retrieve(ctx, vm_refs, []string{"summary"}, &vmmo)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if len(vm_refs) > 0 {
+		err = pc.Retrieve(ctx, vm_refs, []string{"summary"}, &vmmo)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 
 	// Retrieve properties for hosts
 	var hsmo []mo.HostSystem
-	err = pc.Retrieve(ctx, host_refs, []string{"summary"}, &hsmo)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if len(host_refs) > 0 {
+		err = pc.Retrieve(ctx, host_refs, []string{"summary"}, &hsmo)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 
 	// Initialize the map that will hold the VM MOR to cluster reference
